@@ -1,0 +1,59 @@
+[station]
+callsign = "KF0UQR-1"       # this server's callsign-SSID (source of replies)
+tocall   = "UHFLNK"         # requests must be addressed to this
+allow    = []               # e.g. ["KF0UQR-9", "KF0UQR-8"]; empty = any callsign
+
+[kiss]
+host = "127.0.0.1"          # Direwolf KISSPORT
+port = 8001
+
+[link]
+max_info     = 200          # max AX.25 info bytes per frame
+reply_delay  = 0.6          # s to wait before replying (mobile RX/TX turnaround)
+chunk_gap    = 0.0          # extra s between chunks (Direwolf already queues)
+cache_ttl    = 600          # s a reply stays available for T retries
+min_interval = 3.0          # s between new Q requests per callsign
+
+[weather]
+# Any JSON endpoint. Example: Open-Meteo (replace lat/lon).
+url = "https://api.open-meteo.com/v1/forecast?latitude=39.74&longitude=-104.99&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch"
+cache_ttl = 300
+timeout = 8
+
+# One line per field: "<label> <value><suffix>". path is dotted; list indices allowed.
+[[weather.field]]
+label = "Temp"
+path = "current.temperature_2m"
+suffix = "F"
+[[weather.field]]
+label = "Feels"
+path = "current.apparent_temperature"
+suffix = "F"
+[[weather.field]]
+label = "Wind"
+path = "current.wind_speed_10m"
+suffix = " mph"
+[[weather.field]]
+label = "Humidity"
+path = "current.relative_humidity_2m"
+suffix = "%"
+[[weather.field]]
+label = "Precip"
+path = "current.precipitation"
+suffix = " in"
+
+[rss]
+refresh = 600               # s between feed polls
+per_page = 10
+title_len = 70
+summary_len = 600
+
+[[feeds]]
+id = "hn"
+name = "Hacker News"
+url = "https://hnrss.org/frontpage"
+
+[[feeds]]
+id = "ars"
+name = "Ars Technica"
+url = "https://feeds.arstechnica.com/arstechnica/index"
